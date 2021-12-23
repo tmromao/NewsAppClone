@@ -11,9 +11,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.newsappclone.ui.model.NewsData
 
 @Composable
-fun DetailScreen(navController: NavController) {
+fun DetailScreen(navController: NavController, newsData: NewsData) {
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -28,7 +29,7 @@ fun DetailScreen(navController: NavController) {
             navController.popBackStack()
 
         }) {
-            Text(text = "Go to Top News Screen")
+            Text(text = "Go to Top News Screen + ${newsData.author}")
         }//Button
 
     }//Co
@@ -39,5 +40,10 @@ fun DetailScreen(navController: NavController) {
 @Composable
 fun DetailScreenPreview() {
 
-    DetailScreen(rememberNavController())
+    DetailScreen(rememberNavController(),
+    NewsData(2,
+    author = "Tiago Romao",
+    title = "Natal",
+    description = "Bla bla bla",
+    publishedAt = "2021-12-23"))
 }

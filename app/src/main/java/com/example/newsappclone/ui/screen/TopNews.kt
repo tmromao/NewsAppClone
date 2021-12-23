@@ -1,6 +1,7 @@
 package com.example.newsappclone.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,7 +33,9 @@ fun TopNews(navController: NavController) {
 
         LazyColumn {
             this.items(MockData.topNewsList) { newsData ->
-                TopNewsItem(newsData = newsData)
+                TopNewsItem(newsData = newsData, onNewsClick = {
+                    navController.navigate("Detail/${newsData.id}")
+                })
 
             }
         }
@@ -50,11 +53,15 @@ fun TopNews(navController: NavController) {
 }
 
 @Composable
-fun TopNewsItem(newsData: NewsData) {
+fun TopNewsItem(newsData: NewsData, onNewsClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .height(200.dp)
             .padding(8.dp)
+            .clickable {
+                onNewsClick()
+
+            }
     )
     {
 
