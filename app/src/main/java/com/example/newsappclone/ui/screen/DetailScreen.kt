@@ -5,10 +5,9 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
@@ -24,45 +23,76 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.newsappclone.ui.model.NewsData
 import com.example.newsappclone.R
+import com.example.newsappclone.ui.model.MockData
+import com.example.newsappclone.ui.model.MockData.getTimeAgo
 
 @Composable
-fun DetailScreen(newsData: NewsData, scrollState: ScrollState) {
+fun DetailScreen(newsData: NewsData, scrollState: ScrollState, navController: NavController) {
 
-    Column(
-        modifier = Modifier.fillMaxWidth().padding(16.dp).verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
-        Text(text = "Detail Screen of Top news", fontWeight = FontWeight.SemiBold)
+    Scaffold(topBar = {
+        DetailTopAppBar(onBackPressed = { navController.popBackStack() })
+    }) {
 
-        Image(painterResource(id = newsData.image), contentDescription = "")
 
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(16.dp)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            InfoWithIcon(Icons.Default.Edit, info = newsData.author)
-            InfoWithIcon(Icons.Default.DateRange, info = newsData.publishedAt)
+            Text(text = "Detail Screen of Top news", fontWeight = FontWeight.SemiBold)
 
-        }//Row
+            Image(painterResource(id = newsData.image), contentDescription = "")
 
-        Text(text = newsData.title, fontWeight = FontWeight.Bold)
-        Text(text = newsData.description, modifier = Modifier.padding(top = 16.dp))
-        /* Button(onClick = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
 
-            // navController.navigate("TopNews")
-             navController.popBackStack()
+                InfoWithIcon(Icons.Default.Edit, info = newsData.author)
+                InfoWithIcon(Icons.Default.DateRange,
+                    info = MockData.stringToDate(newsData.publishedAt).getTimeAgo()
 
-         }) {
-             Text(text = "Go to Top News Screen + ${newsData.author}")
-         }//Button*/
+            }//Row
 
-    }//Column
+            Text(text = newsData.title, fontWeight = FontWeight.Bold)
+            Text(text = newsData.description, modifier = Modifier.padding(top = 16.dp))
+            /* Button(onClick = {
+
+                // navController.navigate("TopNews")
+                 navController.popBackStack()
+
+             }) {
+                 Text(text = "Go to Top News Screen + ${newsData.author}")
+             }//Button*/
+
+        }//Column
+
+    }
+
 
 }
+
+@Composable
+fun DetailTopAppBar(onBackPressed: () -> Unit = {}) {
+
+    TopAppBar(title = {
+        Text(text = "Detail Screen", fontWeight = FontWeight.SemiBold)
+    },
+        navigationIcon = {
+            IconButton(onClick = { onBackPressed() }) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
+
+            }
+        })
+
+}
+
 
 @Composable
 fun InfoWithIcon(icon: ImageVector, info: String) {
@@ -93,6 +123,7 @@ fun DetailScreenPreview() {
             description = "Bla bla bla",
             publishedAt = "2021-12-23"
         ),
-        rememberScrollState()
+        rememberScrollState(),
+        rememberNavController( )
     )
 }
