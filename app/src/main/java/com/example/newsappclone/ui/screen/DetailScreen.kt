@@ -56,7 +56,7 @@ fun DetailScreen(newsData: NewsData, scrollState: ScrollState, navController: Na
 
                 InfoWithIcon(Icons.Default.Edit, info = newsData.author)
                 InfoWithIcon(Icons.Default.DateRange,
-                    info = MockData.stringToDate(newsData.publishedAt).getTimeAgo()
+                    info = MockData.stringToDate(newsData.publishedAt).getTimeAgo())
 
             }//Row
 
