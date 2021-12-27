@@ -8,8 +8,11 @@ import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.newsappclone.components.BottomMenu
 import com.example.newsappclone.ui.model.MockData
+import com.example.newsappclone.ui.screen.Categories
 import com.example.newsappclone.ui.screen.DetailScreen
+import com.example.newsappclone.ui.screen.Sources
 import com.example.newsappclone.ui.screen.TopNews
 
 @Composable
@@ -23,8 +26,10 @@ fun NewsApp() {
 @Composable
 fun MainScreen(navController: NavHostController, scrollState: ScrollState) {
 
-    Scaffold(bottomBar = {}) {
-        Navigation(navController = navController, scrollState=scrollState)
+    Scaffold(bottomBar = {
+        BottomMenu(navController)
+    }) {
+        Navigation(navController = navController, scrollState = scrollState)
     }
 
 }
@@ -33,6 +38,8 @@ fun MainScreen(navController: NavHostController, scrollState: ScrollState) {
 fun Navigation(navController: NavHostController, scrollState: ScrollState) {
 
     NavHost(navController = navController, startDestination = "TopNews") {
+
+        bottomNavigation(navController = navController)
 
         composable("TopNews") {
 
@@ -55,10 +62,17 @@ fun Navigation(navController: NavHostController, scrollState: ScrollState) {
     }
 }
 
-fun NavGraphBuilder.bottomNavigation(navController: NavController){
+fun NavGraphBuilder.bottomNavigation(navController: NavController) {
 
-    composable(BottomMenuScreen.TopNews.route){
+    composable(BottomMenuScreen.TopNews.route) {
+        TopNews(navController = navController)
+    }
+    composable(BottomMenuScreen.Categories.route) {
+        Categories()
 
+    }
+    composable(BottomMenuScreen.Sources.route) {
+        Sources()
     }
 
 }
