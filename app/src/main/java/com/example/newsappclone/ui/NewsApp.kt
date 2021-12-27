@@ -1,5 +1,6 @@
 package com.example.newsappclone.ui
 
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Scaffold
@@ -9,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.newsappclone.components.BottomMenu
+import com.example.newsappclone.network.NewsManager
 import com.example.newsappclone.ui.model.MockData
 import com.example.newsappclone.ui.screen.Categories
 import com.example.newsappclone.ui.screen.DetailScreen
@@ -35,7 +37,14 @@ fun MainScreen(navController: NavHostController, scrollState: ScrollState) {
 }
 
 @Composable
-fun Navigation(navController: NavHostController, scrollState: ScrollState) {
+fun Navigation(
+    navController: NavHostController,
+    scrollState: ScrollState,
+    newsManager: NewsManager = NewsManager()
+) {
+
+    val articles = newsManager.newsResponse.value.articles
+    Log.d("news", "$articles")
 
     NavHost(navController = navController, startDestination = "TopNews") {
 

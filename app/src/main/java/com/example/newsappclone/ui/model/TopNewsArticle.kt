@@ -1,6 +1,6 @@
 package com.example.newsappclone.ui.model
 
-data class TopNewsArticle {
+data class TopNewsArticle (
 
     val source: Source? = null,
     val author: String? = null,
@@ -11,4 +11,4 @@ data class TopNewsArticle {
     val publishedAt: String? = null,
     val content: String? = null
 
-}
+)
