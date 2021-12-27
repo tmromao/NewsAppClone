@@ -1,4 +1,4 @@
-package com.example.newsappclone
+package com.example.newsappclone.network
 
 import com.example.newsappclone.ui.model.TopNewsResponse
 import retrofit2.Call
