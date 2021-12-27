@@ -11,11 +11,21 @@ import retrofit2.Response
 
 class NewsManager {
 
+    // GET ALL ARTICLES BY COUNTRY INITALS
     private val _newsResponse = mutableStateOf(TopNewsResponse())
     val newsResponse: State<TopNewsResponse>
         @Composable get() = remember {
             _newsResponse
         }
+
+    //GET ARTICLE BY CATEGORY
+
+    private val _getArticleByCategory = mutableStateOf(TopNewsResponse())
+    val getArticleByCategory: MutableState<TopNewsResponse>
+        @Composable get() = remember {
+            _getArticleByCategory
+        }
+
 
     val selectedCategory: MutableState<ArticleCategory?> = mutableStateOf(null)
 
@@ -23,6 +33,7 @@ class NewsManager {
         getArticles()
     }
 
+    //CALLS THE API, GETS THE RESPONSE AS A NEWS DATA OBJECT
     private fun getArticles() {
         val service = Api.retrofitService.getTopArticles("US", Api.API_KEY)
         service.enqueue(object : Callback<TopNewsResponse> {
@@ -45,6 +56,29 @@ class NewsManager {
         })
     }
 
+    fun getArticlesByCategory(category: String) {
+
+        val service = Api.retrofitService.getArticlesByCategory(category, Api.API_KEY)
+        service.enqueue(object : Callback<TopNewsResponse> {
+            override fun onResponse(
+                call: Call<TopNewsResponse>,
+                response: Response<TopNewsResponse>
+            ) {
+                if (response.isSuccessful) {
+                    _getArticleByCategory.value = response.body()!!
+                    Log.d("category ", "${_getArticleByCategory.value}")
+                } else {
+                    Log.d("error", "${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TopNewsResponse>, t: Throwable) {
+                Log.d("error getting by category", "${t.printStackTrace()}")
+            }
+
+        })
+
+    }
 
     fun onSelectedCategoryChanged(category: String) {
         val newCategory = getArticleCategory(category = category)

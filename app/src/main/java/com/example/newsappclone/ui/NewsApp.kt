@@ -104,8 +104,13 @@ fun NavGraphBuilder.bottomNavigation(
         TopNews(navController = navController, articles)
     }
     composable(BottomMenuScreen.Categories.route) {
+
+        newsManager.getArticlesByCategory("business")
+        newsManager.onSelectedCategoryChanged("business")
+
         Categories(newsManager = newsManager, onFetchCategory = {
             newsManager.onSelectedCategoryChanged(it)
+            newsManager.getArticlesByCategory(it)
         })
 
     }
