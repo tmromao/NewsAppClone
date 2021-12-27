@@ -1,26 +1,36 @@
 package com.example.newsappclone.ui
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.newsappclone.ui.model.MockData
 import com.example.newsappclone.ui.screen.DetailScreen
 import com.example.newsappclone.ui.screen.TopNews
 
 @Composable
 fun NewsApp() {
-    Navigation()
+
+    val scrollState = rememberScrollState()
+    val navController = rememberNavController()
+    MainScreen(navController = navController, scrollState = scrollState)
 }
 
 @Composable
-fun Navigation() {
+fun MainScreen(navController: NavHostController, scrollState: ScrollState) {
 
-    val navController = rememberNavController()
-    val scrollState = rememberScrollState()
+    Scaffold(bottomBar = {}) {
+        Navigation(navController = navController, scrollState=scrollState)
+    }
+
+}
+
+@Composable
+fun Navigation(navController: NavHostController, scrollState: ScrollState) {
 
     NavHost(navController = navController, startDestination = "TopNews") {
 
@@ -35,8 +45,20 @@ fun Navigation() {
         ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getInt("newsId")
             val newsData = MockData.getNews(id)
-            DetailScreen(newsData = newsData, scrollState = scrollState, navController = navController)
+            DetailScreen(
+                newsData = newsData,
+                scrollState = scrollState,
+                navController = navController
+            )
         }
 
     }
+}
+
+fun NavGraphBuilder.bottomNavigation(navController: NavController){
+
+    composable(BottomMenuScreen.TopNews.route){
+
+    }
+
 }
