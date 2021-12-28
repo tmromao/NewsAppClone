@@ -37,7 +37,6 @@ fun MainScreen(navController: NavHostController, scrollState: ScrollState) {
     }) {
         Navigation(navController = navController, scrollState = scrollState, paddingValues = it)
     }
-
 }
 
 @Composable
@@ -47,7 +46,6 @@ fun Navigation(
     newsManager: NewsManager = NewsManager(),
     paddingValues: PaddingValues
 ) {
-
     val articles = newsManager.newsResponse.value.articles
     Log.d("news", "$articles")
 
@@ -58,7 +56,6 @@ fun Navigation(
             startDestination = BottomMenuScreen.TopNews.route,
             modifier = Modifier.padding(paddingValues = paddingValues)
         ) {
-
 
             bottomNavigation(
                 navController = navController,
@@ -81,17 +78,10 @@ fun Navigation(
                         scrollState = scrollState,
                         navController = navController
                     )
-
                 }
-
-
             }
-
         }
-
-
     }
-
 }
 
 fun NavGraphBuilder.bottomNavigation(
@@ -115,7 +105,7 @@ fun NavGraphBuilder.bottomNavigation(
 
     }
     composable(BottomMenuScreen.Sources.route) {
-        Sources()
+        Sources(newsManager = newsManager)
     }
 
 }

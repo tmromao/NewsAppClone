@@ -18,6 +18,15 @@ class NewsManager {
             _newsResponse
         }
 
+    //SOURCES MANAGEMENT
+    val sourceName = mutableStateOf("abc-news")
+
+    private val _getArticleBySource = mutableStateOf(TopNewsResponse())
+    val getArticleBySource: MutableState<TopNewsResponse>
+        @Composable get() = remember {
+            _getArticleBySource
+        }
+
     //GET ARTICLE BY CATEGORY
 
     private val _getArticleByCategory = mutableStateOf(TopNewsResponse())
@@ -35,7 +44,7 @@ class NewsManager {
 
     //CALLS THE API, GETS THE RESPONSE AS A NEWS DATA OBJECT
     private fun getArticles() {
-        val service = Api.retrofitService.getTopArticles("pt")
+        val service = Api.retrofitService.getTopArticles("us")
         service.enqueue(object : Callback<TopNewsResponse> {
             override fun onResponse(
                 call: Call<TopNewsResponse>,
@@ -56,6 +65,7 @@ class NewsManager {
         })
     }
 
+    //GET ARTICLES BY CATEGORY - REQUEST
     fun getArticlesByCategory(category: String) {
 
         val service = Api.retrofitService.getArticlesByCategory(category)
@@ -79,6 +89,33 @@ class NewsManager {
         })
 
     }
+
+    //GET ARTICLES BY SOURCE - REQUEST
+    fun getArticlesBySource() {
+
+        val service = Api.retrofitService.getArticlesByCategory(sourceName.value)
+        service.enqueue(object : Callback<TopNewsResponse> {
+            override fun onResponse(
+                call: Call<TopNewsResponse>,
+                response: Response<TopNewsResponse>
+            ) {
+                if (response.isSuccessful) {
+                    _getArticleBySource.value = response.body()!!
+                    Log.d("category ", "${_getArticleBySource.value}")
+                } else {
+                    Log.d("error", "${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TopNewsResponse>, t: Throwable) {
+                Log.d("error getting by source", "${t.printStackTrace()}")
+            }
+
+        })
+
+    }
+
+
 
     fun onSelectedCategoryChanged(category: String) {
         val newCategory = getArticleCategory(category = category)
